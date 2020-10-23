@@ -1,3 +1,18 @@
 package com.fullstack.spring.kotlin.example.model
 
-data class User (val id: Int, val name: String, val salary: Double)
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.Table
+
+@Entity
+@Table
+data class User (
+        @Id
+        @GeneratedValue
+        val id: Int = 0,
+        val name: String = "",
+        val salary: Double = 0.0,
+        val profession: String = "",
+        val department: String = ""
+)

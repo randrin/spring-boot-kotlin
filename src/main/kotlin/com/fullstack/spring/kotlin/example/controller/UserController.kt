@@ -1,20 +1,36 @@
 package com.fullstack.spring.kotlin.example.controller
 
 import com.fullstack.spring.kotlin.example.model.User
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import com.fullstack.spring.kotlin.example.repository.UserRepository
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api")
 class UserController {
 
-    @GetMapping("/getUser")
-    fun getUser() = User(1, "Nzeukang Nimpa Randrin", 2000.0)
+    @Autowired
+    lateinit var userRepository: UserRepository;
 
-    @GetMapping("/listUsers")
-    fun listUsers(): List<User> {
-        val users = listOf(User(1, "Nzeukang Nimpa Randrin", 2000.0), User(2, "Takou Tsapmene Vanessa", 4500.0))
-        return users
+    @PostMapping("/saveUser")
+    fun saveUser(@RequestBody user: User): String {
+        userRepository.save(user);
+        return "User saved successfully."
+    }
+
+    @GetMapping("/getUser/{name}")
+    fun getUser(@PathVariable name: String): User {
+        return userRepository.findByName(name);
+    }
+
+    @GetMapping("/getUsers")
+    fun getUsers(): List<User> {
+        return userRepository.findAll();
+    }
+
+    @DeleteMapping("/deleteUser/{id}")
+    fun deleteUser(@PathVariable id: Integer): String {
+        userRepository.deleteById(id);
+        return "User deleted successfully."
     }
 }
